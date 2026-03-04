@@ -6,7 +6,14 @@ export class JobAdminController {
 
   findAll = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const query = req.query as any;
+      const query = req.query as unknown as {
+        search?: string;
+        category?: string;
+        location?: string;
+        type?: string;
+        limit?: string;
+        offset?: string;
+      };
       const jobs = await this.jobService.findAll(query);
       res.json(jobs);
     } catch (error) {
@@ -25,7 +32,7 @@ export class JobAdminController {
 
   update = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const id = parseInt(req.params.id);
+      const id = parseInt(req.params.id as string);
       const job = await this.jobService.update(id, req.body);
       res.json(job);
     } catch (error) {
@@ -35,7 +42,7 @@ export class JobAdminController {
 
   delete = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const id = parseInt(req.params.id);
+      const id = parseInt(req.params.id as string);
       await this.jobService.delete(id);
       res.json({ message: "Job deleted successfully" });
     } catch (error) {

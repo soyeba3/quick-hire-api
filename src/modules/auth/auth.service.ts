@@ -9,7 +9,7 @@ export class AuthService {
         { email, role: "admin" },
         config.jwt.secret as string,
         {
-          expiresIn: config.jwt.expiresIn as any,
+          expiresIn: config.jwt.expiresIn as jwt.SignOptions["expiresIn"],
         },
       );
 

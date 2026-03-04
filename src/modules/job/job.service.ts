@@ -19,7 +19,7 @@ export class JobService {
       offset,
     );
 
-    const whereClauses: any[] = [];
+    const whereClauses: (ReturnType<typeof sql> | undefined)[] = [];
 
     if (search) {
       whereClauses.push(
@@ -27,13 +27,28 @@ export class JobService {
       );
     }
     if (category) {
-      whereClauses.push(eq(jobs.category, category as any));
+      whereClauses.push(
+        eq(
+          jobs.category,
+          category as
+            | "Technology"
+            | "Design"
+            | "Marketing"
+            | "Sales"
+            | "Business",
+        ),
+      );
     }
     if (location) {
       whereClauses.push(like(jobs.location, `%${location}%`));
     }
     if (type) {
-      whereClauses.push(eq(jobs.type, type as any));
+      whereClauses.push(
+        eq(
+          jobs.type,
+          type as "Full-Time" | "Part-Time" | "Contract" | "Remote",
+        ),
+      );
     }
 
     const baseQuery = db.select().from(jobs);

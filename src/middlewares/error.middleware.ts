@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 
 export const errorMiddleware = (
-  err: any,
+  err: Error & { statusCode?: number; errors?: unknown[] },
   req: Request,
   res: Response,
   next: NextFunction,

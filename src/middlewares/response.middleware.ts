@@ -7,9 +7,13 @@ export const responseMiddleware = (
 ) => {
   const originalJson = res.json;
 
-  res.json = function (data: any) {
-    // If it's already formatted or an error response (status: 'error'), don't wrap it again
-    if (data && (data.status === "success" || data.status === "error")) {
+  res.json = function (data: unknown) {
+    if (
+      data &&
+      typeof data === "object" &&
+      "status" in data &&
+      (data.status === "success" || data.status === "error")
+    ) {
       return originalJson.call(this, data);
     }
 

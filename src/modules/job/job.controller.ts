@@ -6,8 +6,14 @@ export class JobController {
 
   findAll = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { search, category, location, type, limit, offset } =
-        req.query as any;
+      const { search, category, location, type, limit, offset } = req.query as {
+        search?: string;
+        category?: string;
+        location?: string;
+        type?: string;
+        limit?: string;
+        offset?: string;
+      };
       const jobs = await this.jobService.findAll({
         search,
         category,
@@ -24,7 +30,7 @@ export class JobController {
 
   findOne = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const id = parseInt(req.params.id);
+      const id = parseInt(req.params.id as string);
       const job = await this.jobService.findOne(id);
       if (!job) {
         return res.status(404).json({ message: "Job not found" });
