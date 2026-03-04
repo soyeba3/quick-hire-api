@@ -6,7 +6,14 @@ export class ApplicationAdminController {
 
   findAll = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const applications = await this.applicationService.findAll();
+      const { limit, offset } = req.query as {
+        limit?: string;
+        offset?: string;
+      };
+      const applications = await this.applicationService.findAll({
+        limit,
+        offset,
+      });
       res.json(applications);
     } catch (error) {
       next(error);

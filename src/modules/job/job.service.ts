@@ -51,10 +51,20 @@ export class JobService {
       );
     }
 
+    const whereCondition =
+      whereClauses.length > 0 ? and(...whereClauses) : undefined;
+
+    const totalResult = await db
+      .select({ count: sql<number>`count(*)` })
+      .from(jobs)
+      .where(whereCondition);
+
+    const total = totalResult[0]?.count || 0;
+
     const baseQuery = db.select().from(jobs);
 
-    if (whereClauses.length > 0) {
-      baseQuery.where(and(...whereClauses));
+    if (whereCondition) {
+      baseQuery.where(whereCondition);
     }
 
     if (limitNum !== undefined && offsetNum !== undefined) {
@@ -63,7 +73,20 @@ export class JobService {
 
     baseQuery.orderBy(desc(jobs.createdAt));
 
-    return await baseQuery;
+    const items = await baseQuery;
+
+    const page = offset ? parseInt(offset) : 1;
+    const limitVal = limit ? parseInt(limit) : items.length;
+
+    return {
+      items,
+      meta: {
+        total,
+        page,
+        limit: limitVal,
+        totalPages: limitVal > 0 ? Math.ceil(total / limitVal) : 1,
+      },
+    };
   }
 
   async findOne(id: number) {
