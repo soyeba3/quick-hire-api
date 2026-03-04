@@ -4,9 +4,7 @@ dotenv.config();
 export const config = {
   port: process.env.PORT || 5000,
   database: {
-    url:
-      process.env.DATABASE_URL ||
-      "mysql://root:password@localhost:3306/quickhire",
+    url: process.env.DATABASE_URL,
   },
   jwt: {
     secret: process.env.JWT_SECRET || "quickhire_secret_key",

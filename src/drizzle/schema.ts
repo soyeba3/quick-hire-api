@@ -1,6 +1,6 @@
 import {
+  bigint,
   boolean,
-  int,
   mysqlEnum,
   mysqlTable,
   serial,
@@ -43,7 +43,7 @@ export const jobs = mysqlTable("jobs", {
 
 export const applications = mysqlTable("applications", {
   id: serial("id").primaryKey(),
-  jobId: int("job_id")
+  jobId: bigint("job_id", { mode: "number", unsigned: true })
     .notNull()
     .references(() => jobs.id, { onDelete: "cascade" }),
   name: varchar("name", { length: 255 }).notNull(),
