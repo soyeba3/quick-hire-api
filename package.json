@@ -1,8 +1,8 @@
 {
   "name": "quick-hire-api",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "QuickHire API",
+  "main": "dist/app.js",
   "scripts": {
     "build": "tsc && tsc-alias",
     "start": "node dist/app.js",
